@@ -134,3 +134,4 @@ Src/dlldata.c
 unittest-cppcheck-build-dir/
 Src/FilterEngine/FilterLexer.cpp
 Src/FilterEngine/FilterParser.c
+Install_VS2022_Build_Environment.cmd
