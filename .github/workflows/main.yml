@@ -27,17 +27,27 @@ jobs:
         path: Build/WinMergeDownloadDeps
         key: WinMergeDownloadDeps
 
+    - name: Install Inno Setup
+      run: choco install innosetup --no-progress
+
     - name: Build
       run: |
         .\DownloadDeps.cmd
-        Build\msys2\usr\bin\re2c.exe Src\FilterEngine\FilterLexer.re -o Src\FilterEngine\FilterLexer.cpp
+        .\Build\msys2\usr\bin\re2c.exe Src\FilterEngine\FilterLexer.re -o Src\FilterEngine\FilterLexer.cpp
         .\BuildBin.cmd x64 -ci
         if (!(Test-Path Build\x64\Release\WinMergeU.exe)) { throw "WinMergeU.exe build failed!" }
         .\BuildTranslations.cmd
+        .\BuildInstaller.cmd x64
         .\BuildArc.cmd x64 -ci
         if (!(Test-Path Build\Releases\*.zip)) { throw "Release zip packaging failed!" }
         dir Build\x64\Release\WinMergeU.exe
         dir Build\Releases
+
+    - name: Upload installer package
+      uses: actions/upload-artifact@v4
+      with:
+        name: WinMerge-x64-Setup
+        path: Build/Releases/*Setup.exe
 
     - name: Upload portable zip package
       uses: actions/upload-artifact@v4
