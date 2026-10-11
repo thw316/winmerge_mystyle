@@ -535,8 +535,9 @@ int CMergeDoc::Rescan(bool &bBinary, IDENTLEVEL &identical,
 		for (nBuffer = 0; nBuffer < m_nBuffers; nBuffer++)
 			m_ptBuf[nBuffer]->prepareForRescan();
 
-		// Divide diff blocks to align similar lines.
-		if (GetOptionsMgr()->GetBool(OPT_CMP_ALIGN_SIMILAR_LINES))
+		// Divide diff blocks to align paired/similar lines (Araxis block line paired).
+		if (GetOptionsMgr()->GetBool(OPT_CMP_BLOCK_LINE_PAIRED, true) ||
+			GetOptionsMgr()->GetBool(OPT_CMP_ALIGN_SIMILAR_LINES))
 		{
 			if (m_nBuffers < 3)
 				AdjustDiffBlocks();

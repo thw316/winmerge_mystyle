@@ -72,8 +72,11 @@ BOOL CMergeEditSplitterView::Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowNam
 		return FALSE;
 
 	// create a splitter with 1 row, 2 columns
+	DWORD splitterStyle = WS_CHILD | WS_VISIBLE | WS_HSCROLL;
+	if (!m_bDetailView)
+		splitterStyle |= WS_VSCROLL;
 	if (!m_wndSplitter.CreateStatic(this, SWAPPARAMS_IF(bSplitVert, 1, pDoc->m_nBuffers),
-		WS_CHILD | WS_VISIBLE | WS_HSCROLL | WS_VSCROLL) )
+		splitterStyle) )
 	{
 		TRACE0("Failed to CreateStaticSplitter\n");
 		return FALSE;
@@ -103,6 +106,17 @@ BOOL CMergeEditSplitterView::Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowNam
 		pView[nBuffer]->m_bDetailView = m_bDetailView;
 	}
 	pDoc->AddMergeViews(this, pView);
+	if (m_bDetailView)
+	{
+		for (int nBuffer = 0; nBuffer < pDoc->m_nBuffers; nBuffer++)
+		{
+			pView[nBuffer]->SetWordWrapping(false);
+			pView[nBuffer]->SetViewLineNumbers(true);
+			pView[nBuffer]->SetSelectionMargin(true);
+			pView[nBuffer]->ShowScrollBar(SB_VERT, FALSE);
+			pView[nBuffer]->ShowScrollBar(SB_HORZ, TRUE);
+		}
+	}
 	if (!m_bDetailView && pDoc->m_nGroups > 1)
 	{
 		for (int nBuffer = 0; nBuffer < pDoc->m_nBuffers; nBuffer++)

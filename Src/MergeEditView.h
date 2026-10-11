@@ -132,6 +132,7 @@ public:
 			CEColor & crText, bool & bDrawWhitespace) override;
 	virtual void GetLineColors2 (int nLineIndex, DWORD ignoreFlags
 		, CEColor & crBkgnd, CEColor & crText, bool & bDrawWhitespace);
+	virtual void DrawMargin (const CRect & rect, int nLineIndex, int nLineNumber) override;
 	void WMGoto() { OnWMGoto(); };
 	CTreeSitterParser* GetTreeSitterParser();
 	void GotoTreeSitterDefinition();
@@ -158,6 +159,7 @@ public:
 	int GetActiveGroup() const;
 
 	virtual void OnDisplayDiff(int nDiff=0);
+	virtual void OnDisplayDiffLine(int nLine);
 
 	bool IsInitialized() const;
 	bool IsCursorInDiff() const;

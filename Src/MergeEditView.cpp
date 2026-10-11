@@ -943,6 +943,20 @@ void CMergeEditView::GetLineColors2(int nLineIndex, DWORD ignoreFlags, CEColor &
 }
 
 /**
+ * @brief Draw selection margin with line number (suppresses non-target lines in detail view)
+ */
+void CMergeEditView::DrawMargin(const CRect & rect, int nLineIndex, int nLineNumber)
+{
+	if (m_bDetailView && nLineIndex != m_lineBegin)
+	{
+		// In detail view, suppress line number on non-target lines so only the single active line is displayed
+		CCrystalTextView::DrawMargin(rect, nLineIndex, -1);
+		return;
+	}
+	CGhostTextView::DrawMargin(rect, nLineIndex, nLineNumber);
+}
+
+/**
  * @brief Sync other pane position
  */
 void CMergeEditView::UpdateSiblingScrollPos (bool bHorz)
@@ -1048,7 +1062,7 @@ void CMergeEditView::OnDisplayDiff(int nDiff /*=0*/)
 
 		newlineBegin = curDiff.dbegin;
 		ASSERT (newlineBegin >= 0);
-		newlineEnd = curDiff.dend;
+		newlineEnd = m_bDetailView ? curDiff.dbegin : curDiff.dend;
 	}
 
 	m_lineBegin = newlineBegin;
@@ -1075,6 +1089,31 @@ void CMergeEditView::OnDisplayDiff(int nDiff /*=0*/)
 		EnsureVisible(pt);
 
 	// update the width of the horizontal scrollbar
+	InvalidateHorzScrollBar();
+}
+
+/**
+ * @brief Display a single specific line in detail view (Araxis style)
+ */
+void CMergeEditView::OnDisplayDiffLine(int nLine)
+{
+	if (!m_bDetailView)
+		return;
+
+	int nLineCount = GetLineCount();
+	if (nLine < 0)
+		nLine = 0;
+	if (nLine >= nLineCount && nLineCount > 0)
+		nLine = nLineCount - 1;
+
+	if (m_lineBegin == nLine && m_lineEnd == nLine && m_nTopLine == nLine)
+		return;
+
+	m_lineBegin = nLine;
+	m_lineEnd = nLine;
+
+	ScrollToLine(nLine);
+	Invalidate();
 	InvalidateHorzScrollBar();
 }
 
@@ -2777,6 +2816,18 @@ void CMergeEditView::OnUpdateCaret()
 	CWnd* pWnd = GetFocus();
 	if (!m_bDetailView || (pWnd && pWnd->m_hWnd == this->m_hWnd))
 		UpdateLocationViewPosition(m_nTopSubLine, m_nTopSubLine + GetScreenLines());
+
+	if (!m_bDetailView)
+	{
+		CMergeDoc* pDoc = GetDocument();
+		if (pDoc)
+		{
+			pDoc->ForEachView([&](auto& pView) {
+				if (pView->m_bDetailView)
+					pView->OnDisplayDiffLine(nScreenLine);
+			});
+		}
+	}
 }
 /**
  * @brief Select linedifference in the current line.
@@ -3502,9 +3553,18 @@ void CMergeEditView::RefreshOptions()
 		SetDisableBSAtSOL(false);
 	}
 
-	SetWordWrapping(GetOptionsMgr()->GetBool(
-		GetDocument()->m_ptBuf[0]->GetTableEditing() ?  OPT_WORDWRAP_TABLE : OPT_WORDWRAP));
-	SetViewLineNumbers(GetOptionsMgr()->GetBool(OPT_VIEW_LINENUMBERS));
+	if (m_bDetailView)
+	{
+		SetWordWrapping(false);
+		SetViewLineNumbers(true);
+		SetSelectionMargin(true);
+	}
+	else
+	{
+		SetWordWrapping(GetOptionsMgr()->GetBool(
+			GetDocument()->m_ptBuf[0]->GetTableEditing() ?  OPT_WORDWRAP_TABLE : OPT_WORDWRAP));
+		SetViewLineNumbers(GetOptionsMgr()->GetBool(OPT_VIEW_LINENUMBERS));
+	}
 
 	SetViewTabs(GetOptionsMgr()->GetBool(OPT_VIEW_WHITESPACE));
 	SetViewEols(GetOptionsMgr()->GetBool(OPT_VIEW_EOL),
@@ -4047,9 +4107,15 @@ void CMergeEditView::InvalidateSubLineIndexCache( int nLineIndex )
 
 void CMergeEditView::SetWordWrapping( bool bWordWrap )
 {
+	if (m_bDetailView)
+		bWordWrap = false;
 	for (int pane = 0; pane < GetDocument()->m_nBuffers; pane++)
-		GetGroupView(pane)->m_bWordWrap = bWordWrap;
-	CCrystalTextView::SetWordWrapping(bWordWrap);
+	{
+		CMergeEditView* pView = GetGroupView(pane);
+		if (pView != nullptr)
+			pView->m_bWordWrap = (pView->m_bDetailView ? false : bWordWrap);
+	}
+	CCrystalTextView::SetWordWrapping(m_bDetailView ? false : bWordWrap);
 }
 
 /**
@@ -4327,10 +4393,19 @@ void CMergeEditView::DocumentsLoaded()
 	const bool mixedEOLs = GetOptionsMgr()->GetBool(OPT_ALLOW_MIXED_EOL) ||
 		GetDocument()->IsMixedEOL(m_nThisPane);
 	SetViewEols(GetOptionsMgr()->GetBool(OPT_VIEW_EOL), mixedEOLs);
-	SetWordWrapping(GetOptionsMgr()->GetBool(GetDocument()->m_ptBuf[m_nThisPane]->GetTableEditing() ?
-		OPT_WORDWRAP_TABLE : OPT_WORDWRAP));
-	SetViewLineNumbers(GetOptionsMgr()->GetBool(OPT_VIEW_LINENUMBERS));
-	SetSelectionMargin(GetOptionsMgr()->GetBool(OPT_VIEW_FILEMARGIN));
+	if (m_bDetailView)
+	{
+		SetWordWrapping(false);
+		SetViewLineNumbers(true);
+		SetSelectionMargin(true);
+	}
+	else
+	{
+		SetWordWrapping(GetOptionsMgr()->GetBool(GetDocument()->m_ptBuf[m_nThisPane]->GetTableEditing() ?
+			OPT_WORDWRAP_TABLE : OPT_WORDWRAP));
+		SetViewLineNumbers(GetOptionsMgr()->GetBool(OPT_VIEW_LINENUMBERS));
+		SetSelectionMargin(GetOptionsMgr()->GetBool(OPT_VIEW_FILEMARGIN));
+	}
 
 	// Enable Backspace at beginning of line
 	SetDisableBSAtSOL(false);

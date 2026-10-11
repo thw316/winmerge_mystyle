@@ -67,6 +67,7 @@ int CDiffViewBar::OnCreate(LPCREATESTRUCT lpCreateStruct)
 		return -1;
 
 	SetSCBStyle(SCBS_EDGETOP | SCBS_EDGEBOTTOM | SCBS_SIZECHILD);
+	m_szHorz = CSize(200, 52); // Compact single-line panel height (Araxis line-detail style)
 	
 	return 0;
 }

@@ -756,13 +756,26 @@ void CMergeDoc::AdjustDiffBlock(DiffMap & diffMap, const DIFFRANGE & diffrange, 
 	}
 	if (lines1 == 0)
 	{
-		for (int w=0; w<lines0; ++w)
-			diffMap.m_map[w] = DiffMap::GHOST_MAP_ENTRY;
+		for (int w = 0; w < lines0; ++w)
+			diffMap.m_map[lo0 + w] = DiffMap::GHOST_MAP_ENTRY;
 		return;
 	}
 	if (lines0 == 1 && lines1 == 1)
 	{
 		diffMap.m_map[lo0] = hi1;
+		return;
+	}
+
+	// Araxis-style block line pairing (consecutive 1-to-1 pairing within change block)
+	if (GetOptionsMgr()->GetBool(OPT_CMP_BLOCK_LINE_PAIRED, true))
+	{
+		for (int w = 0; w < lines0; ++w)
+		{
+			if (lo1 + w <= hi1)
+				diffMap.m_map[lo0 + w] = lo1 + w;
+			else
+				diffMap.m_map[lo0 + w] = DiffMap::GHOST_MAP_ENTRY;
+		}
 		return;
 	}
 
@@ -802,9 +815,9 @@ void CMergeDoc::AdjustDiffBlock(DiffMap & diffMap, const DIFFRANGE & diffrange, 
 		for (int w=0; w<lines0; ++w)
 		{
 			if (w < lines1)
-				diffMap.m_map[w] = w + tlo;
+				diffMap.m_map[lo0 + w] = w + tlo;
 			else
-				diffMap.m_map[w] = DiffMap::GHOST_MAP_ENTRY;
+				diffMap.m_map[lo0 + w] = DiffMap::GHOST_MAP_ENTRY;
 		}
 		return;
 	}
