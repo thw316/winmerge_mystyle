@@ -30,9 +30,13 @@ jobs:
     - name: Build
       run: |
         .\DownloadDeps.cmd
+        Build\msys2\usr\bin\re2c.exe Src\FilterEngine\FilterLexer.re -o Src\FilterEngine\FilterLexer.cpp
         .\BuildBin.cmd x64 -ci
+        if (!(Test-Path Build\x64\Release\WinMergeU.exe)) { throw "WinMergeU.exe build failed!" }
         .\BuildTranslations.cmd
         .\BuildArc.cmd x64 -ci
+        if (!(Test-Path Build\Releases\*.zip)) { throw "Release zip packaging failed!" }
+        dir Build\x64\Release\WinMergeU.exe
         dir Build\Releases
 
     - name: Upload portable zip package

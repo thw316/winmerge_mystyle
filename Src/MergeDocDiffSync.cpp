@@ -11,6 +11,8 @@
 
 #include "DiffList.h"
 #include "stringdiffs.h"
+#include "OptionsDef.h"
+#include "Common/OptionsMgr.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -767,7 +769,7 @@ void CMergeDoc::AdjustDiffBlock(DiffMap & diffMap, const DIFFRANGE & diffrange, 
 	}
 
 	// Araxis-style block line pairing (consecutive 1-to-1 pairing within change block)
-	if (GetOptionsMgr()->GetBool(OPT_CMP_BLOCK_LINE_PAIRED, true))
+	if (GetOptionsMgr()->GetBool(OPT_CMP_BLOCK_LINE_PAIRED))
 	{
 		for (int w = 0; w < lines0; ++w)
 		{

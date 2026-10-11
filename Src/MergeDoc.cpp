@@ -536,7 +536,7 @@ int CMergeDoc::Rescan(bool &bBinary, IDENTLEVEL &identical,
 			m_ptBuf[nBuffer]->prepareForRescan();
 
 		// Divide diff blocks to align paired/similar lines (Araxis block line paired).
-		if (GetOptionsMgr()->GetBool(OPT_CMP_BLOCK_LINE_PAIRED, true) ||
+		if (GetOptionsMgr()->GetBool(OPT_CMP_BLOCK_LINE_PAIRED) ||
 			GetOptionsMgr()->GetBool(OPT_CMP_ALIGN_SIMILAR_LINES))
 		{
 			if (m_nBuffers < 3)
