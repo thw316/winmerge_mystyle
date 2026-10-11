@@ -501,7 +501,7 @@ Source: ..\..\Translations\Docs\Readme\ReadMe-Finnish.txt; DestDir: {app}\Docs; 
 Source: {#TranslationsDir}\WinMerge\French.po; DestDir: {app}\Languages; Components: Languages\French; Flags: ignoreversion comparetimestamp
 Source: {#TranslationsDir}\ShellExtension\French.po; DestDir: {app}\Languages\ShellExtension; Components: Languages\French; Flags: ignoreversion comparetimestamp
 Source: ..\..\Translations\Docs\Readme\ReadMe-French.txt; DestDir: {app}\Docs; Components: Languages\French
-Source: ..\..\Build\Manual\htmlhelp\WinMergeFrench.chm; DestDir: {app}\Docs; Components: Languages\French
+Source: ..\..\Build\Manual\htmlhelp\WinMergeFrench.chm; DestDir: {app}\Docs; Components: Languages\French; Flags: skipifsourcedoesntexist
 Source: {#TranslationsDir}\WinMerge\Galician.po; DestDir: {app}\Languages; Components: Languages\Galician; Flags: ignoreversion comparetimestamp
 Source: {#TranslationsDir}\ShellExtension\Galician.po; DestDir: {app}\Languages\ShellExtension; Components: Languages\Galician; Flags: ignoreversion comparetimestamp
 Source: ..\..\Translations\Docs\Readme\ReadMe-Galician.txt; DestDir: {app}\Docs; Components: Languages\Galician
@@ -514,17 +514,17 @@ Source: ..\..\Translations\Docs\Readme\ReadMe-Greek.txt; DestDir: {app}\Docs; Co
 Source: {#TranslationsDir}\WinMerge\Hebrew.po; DestDir: {app}\Languages; Components: Languages\Hebrew; Flags: ignoreversion comparetimestamp
 Source: {#TranslationsDir}\ShellExtension\Hebrew.po; DestDir: {app}\Languages\ShellExtension; Components: Languages\Hebrew; Flags: ignoreversion comparetimestamp
 Source: ..\..\Translations\Docs\Readme\ReadMe-Hebrew.txt; DestDir: {app}\Docs; Components: Languages\Hebrew
-Source: ..\..\Build\Manual\htmlhelp\WinMergeHebrew.chm; DestDir: {app}\Docs; Components: Languages\Hebrew
+Source: ..\..\Build\Manual\htmlhelp\WinMergeHebrew.chm; DestDir: {app}\Docs; Components: Languages\Hebrew; Flags: skipifsourcedoesntexist
 Source: {#TranslationsDir}\WinMerge\Hungarian.po; DestDir: {app}\Languages; Components: Languages\Hungarian; Flags: ignoreversion comparetimestamp
 Source: {#TranslationsDir}\ShellExtension\Hungarian.po; DestDir: {app}\Languages\ShellExtension; Components: Languages\Hungarian; Flags: ignoreversion comparetimestamp
 Source: {#TranslationsDir}\WinMerge\Italian.po; DestDir: {app}\Languages; Components: Languages\Italian; Flags: ignoreversion comparetimestamp
 Source: {#TranslationsDir}\ShellExtension\Italian.po; DestDir: {app}\Languages\ShellExtension; Components: Languages\Italian; Flags: ignoreversion comparetimestamp
 Source: ..\..\Translations\Docs\Readme\ReadMe-Italian.txt; DestDir: {app}\Docs; Components: Languages\Italian
-Source: ..\..\Build\Manual\htmlhelp\WinMergeItalian.chm; DestDir: {app}\Docs; Components: Languages\Italian
+Source: ..\..\Build\Manual\htmlhelp\WinMergeItalian.chm; DestDir: {app}\Docs; Components: Languages\Italian; Flags: skipifsourcedoesntexist
 Source: {#TranslationsDir}\WinMerge\Japanese.po; DestDir: {app}\Languages; Components: Languages\Japanese; Flags: ignoreversion comparetimestamp
 Source: {#TranslationsDir}\ShellExtension\Japanese.po; DestDir: {app}\Languages\ShellExtension; Components: Languages\Japanese; Flags: ignoreversion comparetimestamp
 Source: ..\..\Translations\Docs\Readme\ReadMe-Japanese.txt; DestDir: {app}\Docs; Components: Languages\Japanese
-Source: ..\..\Build\Manual\htmlhelp\WinMergeJapanese.chm; DestDir: {app}\Docs; Components: Languages\Japanese
+Source: ..\..\Build\Manual\htmlhelp\WinMergeJapanese.chm; DestDir: {app}\Docs; Components: Languages\Japanese; Flags: skipifsourcedoesntexist
 Source: {#TranslationsDir}\WinMerge\Korean.po; DestDir: {app}\Languages; Components: Languages\Korean; Flags: ignoreversion comparetimestamp
 Source: {#TranslationsDir}\ShellExtension\Korean.po; DestDir: {app}\Languages\ShellExtension; Components: Languages\Korean; Flags: ignoreversion comparetimestamp
 Source: {#TranslationsDir}\WinMerge\Lithuanian.po; DestDir: {app}\Languages; Components: Languages\Lithuanian; Flags: ignoreversion comparetimestamp
@@ -558,7 +558,7 @@ Source: ..\..\Translations\Docs\Readme\ReadMe-Slovenian.txt; DestDir: {app}\Docs
 Source: {#TranslationsDir}\WinMerge\Spanish.po; DestDir: {app}\Languages; Components: Languages\Spanish; Flags: ignoreversion comparetimestamp
 Source: {#TranslationsDir}\ShellExtension\Spanish.po; DestDir: {app}\Languages\ShellExtension; Components: Languages\Spanish; Flags: ignoreversion comparetimestamp
 Source: ..\..\Translations\Docs\Readme\ReadMe-Spanish.txt; DestDir: {app}\Docs; Components: Languages\Spanish
-Source: ..\..\Build\Manual\htmlhelp\WinMergeSpanish.chm; DestDir: {app}\Docs; Components: Languages\Spanish
+Source: ..\..\Build\Manual\htmlhelp\WinMergeSpanish.chm; DestDir: {app}\Docs; Components: Languages\Spanish; Flags: skipifsourcedoesntexist
 Source: {#TranslationsDir}\WinMerge\Swedish.po; DestDir: {app}\Languages; Components: Languages\Swedish; Flags: ignoreversion comparetimestamp
 Source: {#TranslationsDir}\ShellExtension\Swedish.po; DestDir: {app}\Languages\ShellExtension; Components: Languages\Swedish; Flags: ignoreversion comparetimestamp
 Source: ..\..\Translations\Docs\Readme\ReadMe-Swedish.txt; DestDir: {app}\Docs; Components: Languages\Swedish
@@ -587,7 +587,7 @@ Source: ..\..\Docs\Users\ReadMe.txt; DestDir: {app}\Docs; Flags: overwritereadon
 Source: ..\..\Docs\Users\Contributors.txt; DestDir: {app}; Flags: overwritereadonly uninsremovereadonly; Components: Core
 Source: ..\..\Docs\Users\ReleaseNotes.html; DestDir: {app}\Docs; Flags: overwritereadonly uninsremovereadonly; Components: Core
 Source: ..\..\Docs\Users\ChangeLog.html; DestDir: {app}\Docs; Flags: overwritereadonly uninsremovereadonly; Components: Core
-Source: ..\..\Build\Manual\htmlhelp\WinMerge.chm; DestDir: {app}\Docs\; Flags: overwritereadonly uninsremovereadonly; Components: Core
+Source: ..\..\Build\Manual\htmlhelp\WinMerge.chm; DestDir: {app}\Docs\; Flags: overwritereadonly uninsremovereadonly skipifsourcedoesntexist; Components: Core
 Source: ..\..\Docs\users\GPL.rtf; DestDir: {app}\Docs\; Flags: overwritereadonly uninsremovereadonly; Components: Core
 
 ;Plugins

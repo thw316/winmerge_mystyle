@@ -48,11 +48,11 @@ jobs:
         name: WinMerge-x64-Setup
         path: Build/Releases/*Setup.exe
 
-    - name: Upload portable zip package
+    - name: Upload portable package
       uses: actions/upload-artifact@v4
       with:
         name: WinMerge-x64-Portable
-        path: Build/Releases/*.zip
+        path: Build/Releases/x64-zip-version/WinMerge/
 
     - name: Upload WinMerge x64 binaries
       uses: actions/upload-artifact@v4
