@@ -30,16 +30,26 @@ jobs:
     - name: Build
       run: |
         .\DownloadDeps.cmd
-        .\BuildAll.cmd x64 -ci
+        .\BuildBin.cmd x64 -ci
+        .\BuildTranslations.cmd
+        .\BuildArc.cmd x64 -ci
+        dir Build\Releases
 
-    - name: Upload zip
+    - name: Upload portable zip package
       uses: actions/upload-artifact@v4
       with:
-        name: WinMerge-x64.zip
+        name: WinMerge-x64-Portable
         path: Build/Releases/*.zip
 
-    - name: Upload installer
+    - name: Upload WinMerge x64 binaries
       uses: actions/upload-artifact@v4
       with:
-        name: WinMerge-x64-Setup-x64.exe
-        path: Build/Releases/*.exe
+        name: WinMerge-x64-Binaries
+        path: |
+          Build/x64/Release/WinMergeU.exe
+          Build/x64/Release/*.dll
+          Build/x64/Release/WinIMerge/
+          Build/x64/Release/WinWebDiff/
+          Build/x64/Release/darkmodelib/
+          Build/x64/Release/TreeSitterGrammars/
+          Build/x64/Release/Merge7z/
